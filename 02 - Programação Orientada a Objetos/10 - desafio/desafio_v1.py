@@ -1,6 +1,7 @@
-from abc import ABC, abstractclassmethod, abstractproperty
+import textwrap
+from colorama import Fore, Style  # Importando cores para o terminal
 from datetime import datetime
-
+from abc import ABC, abstractmethod  # Importando ABC e abstractmethod
 
 class Cliente:
     def __init__(self, endereco):
@@ -59,26 +60,27 @@ class Conta:
         excedeu_saldo = valor > saldo
 
         if excedeu_saldo:
-            print("\n@@@ Operação falhou! Você não tem saldo suficiente. @@@")
-
+            print(Fore.RED + "\n❌❌❌ Operação falhou! Você não tem saldo suficiente. ❌❌❌")
+            print(Style.RESET_ALL)  # Resetando a cor
         elif valor > 0:
             self._saldo -= valor
-            print("\n=== Saque realizado com sucesso! ===")
+            print(Fore.GREEN + "\n✅✅✅ Saque realizado com sucesso! ✅✅✅")
+            print(Style.RESET_ALL)  # Resetando a cor
             return True
-
         else:
-            print("\n@@@ Operação falhou! O valor informado é inválido. @@@")
-
+            print(Fore.RED + "\n❌❌❌ Operação falhou! O valor informado é inválido. ❌❌❌")
+            print(Style.RESET_ALL)  # Resetando a cor
         return False
 
     def depositar(self, valor):
         if valor > 0:
             self._saldo += valor
-            print("\n=== Depósito realizado com sucesso! ===")
+            print(Fore.GREEN + "\n✅✅✅ Depósito realizado com sucesso! ✅✅✅")
+            print(Style.RESET_ALL)  # Resetando a cor
         else:
-            print("\n@@@ Operação falhou! O valor informado é inválido. @@@")
+            print(Fore.RED + "\n❌❌❌ Operação falhou! O valor informado é inválido. ❌❌❌")
+            print(Style.RESET_ALL)  # Resetando a cor
             return False
-
         return True
 
 
@@ -97,14 +99,13 @@ class ContaCorrente(Conta):
         excedeu_saques = numero_saques >= self.limite_saques
 
         if excedeu_limite:
-            print("\n@@@ Operação falhou! O valor do saque excede o limite. @@@")
-
+            print(Fore.RED + "\n❌❌❌ Operação falhou! O valor do saque excede o limite. ❌❌❌")
+            print(Style.RESET_ALL)  # Resetando a cor
         elif excedeu_saques:
-            print("\n@@@ Operação falhou! Número máximo de saques excedido. @@@")
-
+            print(Fore.RED + "\n❌❌❌ Operação falhou! Número máximo de saques excedido. ❌❌❌")
+            print(Style.RESET_ALL)  # Resetando a cor
         else:
             return super().sacar(valor)
-
         return False
 
     def __str__(self):
@@ -135,11 +136,12 @@ class Historico:
 
 class Transacao(ABC):
     @property
-    @abstractproperty
+    @abstractmethod
     def valor(self):
         pass
 
-    @abstractclassmethod
+    @classmethod
+    @abstractmethod
     def registrar(self, conta):
         pass
 
